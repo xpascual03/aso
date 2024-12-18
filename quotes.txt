@@ -1,0 +1,43 @@
+3. Configurar quotes de disc (limitació a 2 GB per usuari)
+Passos per configurar quotes:
+Instal·lar el sistema de quotes (si no està instal·lat):
+
+	sudo apt update
+	sudo apt install quota
+
+Habilitar quotes al sistema:
+
+Edita el fitxer /etc/fstab per habilitar quotes al sistema de fitxers corresponent (per exemple, per a /home):
+
+	/dev/sdX /home ext4 defaults,usrquota,grpquota 0 2
+
+Remunta el sistema de fitxers per aplicar els canvis:
+
+	sudo mount -o remount /home
+
+
+Inicialitzar les bases de dades de quotes:
+
+
+	sudo quotacheck -cum /home
+	sudo quotaon /home
+
+
+Establir quotes per a l’usuari oriol:
+
+Defineix un límit de 2 GB (soft i hard limit) per a l’usuari:
+
+	sudo edquota -u oriol
+
+L’editor mostrarà una configuració com aquesta:
+
+	Disk quotas for user oriol (uid 2345):
+ 	  Filesystem  blocks   soft   hard   inodes   soft   hard
+  	  /dev/sdX       0    2097152 2097152       0      0      0
+
+2097152 blocs són 2 GB (1 bloc = 1 KB).
+
+
+Comprovar les quotes:
+
+quota -u oriol
